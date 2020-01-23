@@ -2,18 +2,18 @@ import argparse
 import nmap
 import requests
 import whois
-import securityheaders
-from openvas_lib import VulnscanManager, VulnscanException
+import subprocess
 
-#parser = argparse.ArgumentParser()
-#parser.add_argument("url", help="check for vulnerabilities in the given url")
-#parser.add_argument("action", help="full, info-gather, xss, sql")
-#parser.add_argument("checkPassword", help="f")
-#args = parser.parse_args()
-#print(args.echo)
 
-'''Information gathering of the web server'''
+# parser = argparse.ArgumentParser()
+# parser.add_argument("url", help="check for vulnerabilities in the given url")
+# parser.add_argument("action", help="full, info-gather, xss, sql")
+# parser.add_argument("checkPassword", help="f")
+# args = parser.parse_args()
+# print(args.echo)
 
+
+'''Web Vulnerability Scanning'''
 #whois lookup of the target
 def whois_lookup(url):
     print("Starting whois lookup")
@@ -64,21 +64,49 @@ def header_information(url):
         print('[-] X-Content-Type-Options header not set')
 
 
+def net_vuln_scan(url):
+    subprocess.run["clear", "l"]
+    print("Running web vulnerability scanner ")
+    scan = subprocess.run(["nikto host+ ", url], stdout=subprocess.PIPE, shell=True)
+    (output,error) = scan.communicate()
+    print(output)
+
+
+
+
+
+'''Network Vulnerability Scanning'''
 #Port scanning and fingerprinting the target
-def port_scan(url):
+#nmap --reason -n -Pn --packet-trace -g 80 -sO -p 6 <target ip>
+#nmap --reason -n -Pn --packet-trace -g 80 -sA -p 80 <target ip>
+def port_scan(target):
+    print("Portscanning has started")
     nm = nmap.PortScanner()
-    print(nm.command_line())
+    scan = nm.scan(target, '22-443', arguments='-sV --script=/usr/local/share/nmap/scripts/vulscan' )['scan']['192.168.0.126']['tcp']
+    ports = scan.keys()
+
+    for host in nm.all_hosts():
+         print('---------------------------------')
+         print('Host %s(%s)' % (host, nm[host].hostname()))
+         print('State: %s' % nm[host].state())
+         for port in ports:
+            print('---------------------------------------------------------------')
+            print('port number: ', port)
+            print('name: ', scan[port]['name'], '/tcp')
+            print('product: ', scan[port]['product'])
+            print('version: ', scan[port]['version'])
+            print('--------------------------------------------------------------------')
+            vulns = list(filter(bool, scan[22]['script']['vulscan'].splitlines()))
+            for vuln in vulns:
+                print(vuln, '\n')
+
+def open_vas(target):
+
+    
 
 
-#def vulnerabilityScanner(target):
 
-     
-
-
-
-
-
-port_scan('https://www.google.com')
+net_vuln_scan('http://192.168.0.126')
 
 # def xss(url):
 
