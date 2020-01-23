@@ -65,11 +65,17 @@ def header_information(url):
 
 
 def net_vuln_scan(url):
-    subprocess.run["clear", "l"]
+    subprocess.run("clear")
     print("Running web vulnerability scanner ")
-    scan = subprocess.run(["nikto host+ ", url], stdout=subprocess.PIPE, shell=True)
-    (output,error) = scan.communicate()
-    print(output)
+    scan = subprocess.run(["nikto +host %s"%url], stdout=subprocess.PIPE, shell=True)
+    output = scan.stdout
+    if scan.returncode:
+        raise Exception(error)
+    else:
+        vulns = list(filter(bool, output.splitlines()))
+        for vuln in vulns:
+            print(vuln, '\n')
+        
 
 
 
@@ -100,7 +106,6 @@ def port_scan(target):
             for vuln in vulns:
                 print(vuln, '\n')
 
-def open_vas(target):
 
     
 
