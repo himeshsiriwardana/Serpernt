@@ -10,15 +10,20 @@ from functools import partial
 '''Web Vulnerability Scanning'''
 #whois lookup of the target
 def whois_lookup(url):
-    print("+++++++++++++++++++++Starting whois lookup++++++++++++++++++")
-    time.sleep(2)
-    domain = whois.query(url)
-    print('[+]name: ', domain.name)
-    print('[+]registrar: ', domain.registrar)
-    print('[+]creation date', domain.creation_date)
-    print('[+]expiration date', domain.expiration_date)
-    print('[+]last updated :', domain.last_updated)
-    print('[+]name servers: ', domain.name_servers)
+    try:
+        domain = whois.query(url)
+        print("+++++++++++++++++++++Starting whois lookup++++++++++++++++++")
+        time.sleep(2)
+    
+        print('[+]name: ', domain.name)
+        print('[+]registrar: ', domain.registrar)
+        print('[+]creation date', domain.creation_date)
+        print('[+]expiration date', domain.expiration_date)
+        print('[+]last updated :', domain.last_updated)
+        print('[+]name servers: ', domain.name_servers)
+    
+    except:
+        pass()
 
 #Gaining http header information
 def header_information(url):
