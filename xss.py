@@ -7,7 +7,6 @@ from openvas_lib import VulnscanManager, VulnscanException
 from threading import Semaphore
 from functools import partial
 
-
 '''Web Vulnerability Scanning'''
 #whois lookup of the target
 def whois_lookup(url):
@@ -117,10 +116,21 @@ def main():
     #parser.add_argument("action", help="full, info-gather, xss, sql")
     #parser.add_argument("checkPassword", help="f")
     args = parser.parse_args()
-    if"http" in args.target:
-        print("Starting web vulnerability scanning on ", args.target)
+    target = args.target
+    if "http" in args.target:
+        print("Starting web vulnerability scanning on ", target)
         print("---------------------------------------------------")
         print("----------------Gathering information------------------")
+        whois_lookup(target)
+        header_information(target)
+        web_vuln_scan(target)
+    
+    else:
+        print("Starting network vulnerability scanning on ", target)
+        port_scan(target)
+        
+
+
     
 #web_vuln_scan(args.target)
 
