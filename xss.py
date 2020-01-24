@@ -6,6 +6,7 @@ import subprocess
 from openvas_lib import VulnscanManager, VulnscanException
 from threading import Semaphore
 from functools import partial
+from time import sleep
 
 '''Web Vulnerability Scanning'''
 #whois lookup of the target
@@ -22,8 +23,8 @@ def whois_lookup(url):
         print('[+]last updated :', domain.last_updated)
         print('[+]name servers: ', domain.name_servers)
     
-    except:
-        pass()
+    except Exception:
+        pass
 
 #Gaining http header information
 def header_information(url):
@@ -67,6 +68,7 @@ def header_information(url):
 
 
 def web_vuln_scan(url):
+    time.sleep(4)
     subprocess.run("clear")
 
     print("++++++++++++++++++++Running web vulnerability scanner++++++++++++++++++ ")
@@ -87,7 +89,7 @@ def web_vuln_scan(url):
 def port_scan(target):
     print("+++++++++++++++++++++Portscanning has started++++++++++++++++++++++++++")
     nm = nmap.PortScanner()
-    scan = nm.scan(target, '22-443', arguments='-sV --script=/usr/local/share/nmap/scripts/vulscan' )['scan']['192.168.0.126']['tcp']
+    scan = nm.scan(target, '22-443', arguments='-sV --script=/usr/local/share/nmap/scripts/vulscan' )['scan'][target]['tcp']
     ports = scan.keys()
 
     for host in nm.all_hosts():
