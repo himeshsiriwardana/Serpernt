@@ -3,7 +3,7 @@ import nmap
 import requests
 import whois
 import subprocess
-from openvas_lib import VulnscanManager, VulnscanException
+from openvas_lib import VulnscanManager, VulnscanException, report_parser
 from threading import Semaphore
 from functools import partial
 from time import sleep
@@ -72,7 +72,7 @@ def web_vuln_scan(url):
     subprocess.run("clear")
 
     print("++++++++++++++++++++Running web vulnerability scanner++++++++++++++++++ ")
-    scan = subprocess.run(["nikto +host %s"%url], stdout=subprocess.PIPE, shell=True)
+    scan = subprocess.run(["nikto +host %s -output nikto.xml -Format xml"%url], stdout=subprocess.PIPE, shell=True)
     output = scan.stdout
     if scan.returncode:
         raise Exception(error)
@@ -89,7 +89,7 @@ def web_vuln_scan(url):
 def port_scan(target):
     print("+++++++++++++++++++++Portscanning has started++++++++++++++++++++++++++")
     nm = nmap.PortScanner()
-    scan = nm.scan(target, '22-443', arguments='-sV --script=/usr/local/share/nmap/scripts/vulscan' )['scan'][target]['tcp']
+    scan = nm.scan(target, '22-443', arguments='-sV --script=/usr/local/share/nmap/scripts/vulscan -oX nmap.xml ' )['scan'][target]['tcp']
     ports = scan.keys()
 
     for host in nm.all_hosts():
@@ -111,17 +111,19 @@ def net_vuln_scan(host, user, password, target):
     print("++++++++++++++++++++++++Running the network vulnerability scanner++++++++++++++++")
     sem = Semaphore(0)
     manager = VulnscanManager(host,user, password)
-    manager.launch_scan(target, profile = "empty", callback_end = partial(lambda x: x.release(), sem), callback_progress = my_print_status)
-
+    scan_id, target_id = manager.launch_scan(target, profile = "empty", callback_end = partial(lambda x: x.release(), sem), callback_progress = my_print_status)
     sem.acquire()
     print("finished")
+
+    while True:
+        openvas_results = manager.get_results(scan_id)
+        print(openvas_results)
+        break
 
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("target", help="check for vulnerabilities in the given url or IP address")
-    #parser.add_argument("action", help="full, info-gather, xss, sql")
-    #parser.add_argument("checkPassword", help="f")
     args = parser.parse_args()
     target = args.target
     if "http" in args.target:
