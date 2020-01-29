@@ -114,11 +114,9 @@ def net_vuln_scan(host, user, password, target):
     scan_id, target_id = manager.launch_scan(target, profile = "empty", callback_end = partial(lambda x: x.release(), sem), callback_progress = my_print_status)
     sem.acquire()
     print("finished")
+    openvas_results = manager.get_results(scan_id)
+    print(openvas_results)
 
-    while True:
-        openvas_results = manager.get_results(scan_id)
-        print(openvas_results)
-        break
 
 
 def main():
@@ -141,7 +139,7 @@ def main():
 
 
     
-#web_vuln_scan(args.target)
+net_vuln_scan("localhost", "himesh", )
 
 # def xss(url):
 
