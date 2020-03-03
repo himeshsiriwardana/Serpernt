@@ -7,8 +7,6 @@ import nmap
 import json
 from datetime import datetime
 
-
-
 '''Network Vulnerability Scanning'''
 
 def nmap_scan(target,port_start,port_end,scan_type, script, time):
@@ -17,8 +15,6 @@ def nmap_scan(target,port_start,port_end,scan_type, script, time):
     output = open(str(time) + "-nmap.xml", "w")
     output.write(nm.get_nmap_last_output())
 
-
-  
 #openvas scanning
 def create_target(target):
     #Creating a target
@@ -113,29 +109,3 @@ start_scan(targetID,taskID, start_of_scan)
 print("openvas scan has ended")
 
 import scanparsing
-
-
-
-
-
-
-    
-
-
-
-
-
-
-    
-        
-
-    
-
-
-
-
-
-
-
-
-
