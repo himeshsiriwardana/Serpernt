@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/local/bin/../share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.70 scan initiated Fri Feb 14 09:55:39 2020 as: nmap -oX - -p 1-65535 -sT -&#45;script=/usr/local/share/nmap/scripts/vulscan 192.168.1.23 -->
+<nmaprun scanner="nmap" args="nmap -oX - -p 1-65535 -sT -&#45;script=/usr/local/share/nmap/scripts/vulscan 192.168.1.23" start="1581702939" startstr="Fri Feb 14 09:55:39 2020" version="7.70" xmloutputversion="1.04">
+<scaninfo type="connect" protocol="tcp" numservices="65535" services="1-65535"/>
+<verbose level="0"/>
+<debugging level="0"/>
+<host starttime="1581702939" endtime="1581702955"><status state="up" reason="conn-refused" reason_ttl="0"/>
+<address addr="192.168.1.23" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+<ports><extraports state="closed" count="65534">
+<extrareasons reason="conn-refused" count="65534"/>
+</extraports>
+<port protocol="tcp" portid="111"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="rpcbind" method="table" conf="3"/></port>
+</ports>
+<times srtt="5692" rttvar="1300" to="100000"/>
+</host>
+<runstats><finished time="1581702955" timestr="Fri Feb 14 09:55:55 2020" elapsed="16.08" summary="Nmap done at Fri Feb 14 09:55:55 2020; 1 IP address (1 host up) scanned in 16.08 seconds" exit="success"/><hosts up="1" down="0" total="1"/>
+</runstats>
+</nmaprun>

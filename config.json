@@ -1,0 +1,20 @@
+{
+    "target": {
+        "IP": "192.168.1.23",
+        "port_start": 1,
+        "port_end": 65535
+    },
+
+    "nmap": {
+        "script":"/usr/local/share/nmap/scripts/vulscan",
+        "scan_type": "T",
+        "verbose": "True",
+        "verbose-level": 1
+    },
+    
+    "openvas": {
+        "username": "admin",
+        "password": "admin",
+        "scan_type": "Full and fast"
+    }   
+}
